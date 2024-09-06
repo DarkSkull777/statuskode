@@ -6,13 +6,11 @@ import random
 import time
 from urllib.parse import urlparse
 
-# Fungsi untuk membaca user-agent dari file
 def load_user_agents(file_path):
     with open(file_path, 'r') as f:
         user_agents = f.read().splitlines()
     return user_agents
 
-# Fungsi untuk mendapatkan status kode HTTP
 def get_status_code(url, user_agents, timeout=10):
     headers = {'User-Agent': random.choice(user_agents)}
     try:
@@ -21,9 +19,7 @@ def get_status_code(url, user_agents, timeout=10):
     except requests.RequestException:
         return None
 
-# Fungsi untuk memproses target URL
 def process_target(target, match_codes, filter_codes, output_file, user_agents):
-    # Tambahkan protokol jika tidak ada
     parsed_url = urlparse(target)
     if not parsed_url.scheme:
         target = 'http://' + target
@@ -40,7 +36,6 @@ def process_target(target, match_codes, filter_codes, output_file, user_agents):
             with open(output_file, 'a') as f:
                 f.write(result + '\n')
 
-# Fungsi worker untuk thread
 def worker(task_queue, match_codes, filter_codes, output_file, user_agents, rate):
     while True:
         target = task_queue.get()
@@ -53,7 +48,6 @@ def worker(task_queue, match_codes, filter_codes, output_file, user_agents, rate
             print(f"Error processing {target}: {e}")
         end_time = time.time()
         
-        # Hitung waktu yang dibutuhkan untuk mematuhi rate limit
         elapsed_time = end_time - start_time
         wait_time = max(0, (1 / rate) - elapsed_time)
         time.sleep(wait_time)
@@ -79,7 +73,6 @@ def main():
     output_file = args.output
     rate = args.rate
 
-    # Load user agents from file
     user_agents = load_user_agents('useragent.txt')
 
     task_queue = q.Queue()
