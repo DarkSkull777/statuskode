@@ -1,11 +1,7 @@
 # statuskode
 checking status kode from list site like httpx
 
-
-# help
-```usage: statuskode.py [-h] [-l LIST] [-mc MATCH_CODE] [-fc FILTER_CODE] [-t THREADS] [-o OUTPUT] [-r RATE]
-
-options:
+```options:
   -h, --help            show this help message and exit
   -l LIST, --list LIST  File containing list of target URLs
   -mc MATCH_CODE, --match-code MATCH_CODE
