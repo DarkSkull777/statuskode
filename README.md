@@ -1,7 +1,8 @@
 # statuskode
 checking status kode from list site like httpx
 
-```options:
+```
+options:
   -h, --help            show this help message and exit
   -l LIST, --list LIST  File containing list of target URLs
   -mc MATCH_CODE, --match-code MATCH_CODE
