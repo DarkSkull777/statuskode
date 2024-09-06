@@ -5,8 +5,6 @@ checking status kode from list site like httpx
 # help
 ```usage: statuskode.py [-h] [-l LIST] [-mc MATCH_CODE] [-fc FILTER_CODE] [-t THREADS] [-o OUTPUT] [-r RATE]
 
-Dymles Ganz 1337
-
 options:
   -h, --help            show this help message and exit
   -l LIST, --list LIST  File containing list of target URLs
