@@ -19,10 +19,20 @@ def get_status_code(url, user_agents, timeout=10):
     except requests.RequestException:
         return None
 
+def check_protocol(target, user_agents):
+    for protocol in ['https://', 'http://']:
+        url = protocol + target
+        status_code = get_status_code(url, user_agents)
+        if status_code is not None:
+            return url
+    return None
+
 def process_target(target, match_codes, filter_codes, output_file, user_agents):
     parsed_url = urlparse(target)
     if not parsed_url.scheme:
-        target = 'http://' + target
+        target = check_protocol(target, user_agents)
+        if not target:
+            return
 
     status_code = get_status_code(target, user_agents)
     if status_code is not None:
@@ -30,11 +40,10 @@ def process_target(target, match_codes, filter_codes, output_file, user_agents):
             return
         if filter_codes and status_code in filter_codes:
             return
-        result = f"{target} > {status_code}"
-        print(result)
+        print(f"{target} > {status_code}")
         if output_file:
             with open(output_file, 'a') as f:
-                f.write(result + '\n')
+                f.write(target + '\n')
 
 def worker(task_queue, match_codes, filter_codes, output_file, user_agents, rate):
     while True:
@@ -47,7 +56,7 @@ def worker(task_queue, match_codes, filter_codes, output_file, user_agents, rate
         except Exception as e:
             print(f"Error processing {target}: {e}")
         end_time = time.time()
-        
+
         elapsed_time = end_time - start_time
         wait_time = max(0, (1 / rate) - elapsed_time)
         time.sleep(wait_time)
